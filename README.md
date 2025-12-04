@@ -1,62 +1,69 @@
-🚀 README: Sistema de Repositório Jurídico com FastMCP
-Este guia rápido explica como configurar e executar o seu sistema completo, que utiliza um servidor FastMCP (serviço de backend especializado) e uma aplicação principal em Python (app.py) contendo a lógica do Agente e do Proxy.
+🚀 Sistema de Repositório Jurídico com FastMCP
 
-💻 1. Pré-requisitos
-Certifique-se de ter os seguintes softwares instalados em seu ambiente:
+Este guia explica o processo de configuração e execução do sistema, que é dividido em três fases principais: Ingestão de Dados, Inicialização do Servidor de Backend (FastMCP) e Execução da Aplicação Principal (app.py).
+
+O sistema utiliza um servidor FastMCP (serviço de backend especializado) para consultas e uma aplicação Python (app.py) contendo a lógica do Agente e a função proxy que interliga os serviços.
+
+🛠️ 1. Configuração Inicial e Dependências
+
+1.1. Pré-requisitos
+
+Certifique-se de que você tem os seguintes softwares instalados no seu ambiente local:
 
 Python 3.x
 
-pip (gerenciador de pacotes do Python)
+pip (Gerenciador de pacotes do Python)
 
-🛠️ 2. Instalação das Dependências
-O arquivo requirements.txt lista todas as bibliotecas Python necessárias para que o programa funcione.
+1.2. Instalação das Dependências
 
-Para instalar todas as dependências do projeto, execute o seguinte comando no seu terminal, dentro do diretório raiz do projeto:
+O arquivo requirements.txt lista todas as bibliotecas Python necessárias (como FastAPI, Uvicorn, bibliotecas para embeddings, etc.).
 
-Bash
+Execute o comando abaixo no terminal, dentro do diretório raiz do projeto, para instalar todas as dependências:
 
 pip install -r requirements.txt
-📂 3. Etapa de Ingestão de Dados (Ingestão Jurídica)
-Esta etapa é obrigatória e única (a menos que seus dados mudem). Ela carrega e prepara os documentos jurídicos para que o servidor FastMCP possa consultá-los.
 
-Como Rodar:
-Execute o script de ingestão, que normalmente se chama ingestaojuri.py (ou nome similar):
 
-Bash
+📂 2. Etapa de Ingestão de Dados (Ingestão Jurídica)
+
+Esta etapa é obrigatória e deve ser executada apenas uma vez (ou sempre que houver atualização nas fontes de dados jurídicos). Ela prepara os documentos para a consulta.
+
+2.1. Execução do Script de Ingestão
+
+Execute o script responsável pelo carregamento e processamento dos documentos:
 
 python ingestaojuri.py
-O que ele faz: Este script lê suas fontes de dados jurídicos, processa-as (por exemplo, tokenização, indexação, embedding) e as salva em um formato que o FastMCP pode consultar (como um banco de dados local ou um índice vetorial).
 
-Aguarde: Espere até que o script retorne uma mensagem de sucesso, indicando que a ingestão foi concluída.
 
-📡 4. Iniciando o Servidor FastMCP (Backend)
-O FastMCP (provavelmente construído com FastAPI ou similar) é o servidor de backend que hospeda a lógica de consulta especializada. Ele deve estar ativo antes de a aplicação principal ser iniciada.
+Processo: Este script lê suas fontes de dados, aplica processamento de linguagem natural (tokenização, indexação, embedding vetorial) e armazena os dados em um formato consultável pelo FastMCP.
 
-Como Rodar:
-Se o seu servidor for baseado em Uvicorn/FastAPI, o comando típico será:
+Aguarde: O processo pode levar alguns minutos, dependendo do volume de dados. Espere a mensagem de conclusão antes de prosseguir.
 
-Bash
+📡 3. Iniciando os Serviços
+
+O sistema requer que dois componentes rodem em paralelo: o servidor de backend e a aplicação principal.
+
+3.1. Servidor FastMCP (Backend)
+
+Inicie o servidor de backend que hospeda a lógica de consulta especializada.
+
+Execute o comando em um terminal:
 
 uvicorn mcserver:app --host 127.0.0.1 --port 8000
-Ajuste: Se o nome do seu arquivo ou variável de aplicação for diferente, altere mcserver:app conforme necessário.
 
-O que ele faz: O servidor começará a escutar requisições no endereço http://127.0.0.1:8000.
 
-🚨 NOTA CRÍTICA: Mantenha este terminal aberto e rodando. Você precisará abrir um novo terminal para a próxima etapa.
+O servidor iniciará, escutando requisições no endereço http://127.0.0.1:8000.
 
-▶️ 5. Rodando o Programa Principal (Aplicação Final)
-Com o servidor FastMCP ativo (no primeiro terminal), você pode iniciar a aplicação principal (app.py), que contém a lógica do Agente e a função proxy que fará a ponte para o backend.
+Ajuste: Se o seu arquivo principal ou variável de aplicação FastAPI for diferente, altere mcserver:app.
 
-Como Rodar:
-No novo terminal que você abriu, execute:
+⚠️ Atenção: Mantenha este terminal aberto e rodando. Você deve abrir um novo terminal para a próxima etapa.
 
-Bash
+3.2. Programa Principal (Aplicação Final)
+
+Com o servidor FastMCP ativo, inicie o Agente da aplicação principal.
+
+Execute o comando no novo terminal:
 
 python app.py
-Fluxo de Comunicação:
 
-O app.py inicia a interface ou o Agente.
 
-Quando uma consulta jurídica é feita, a função proxy envia um HTTP POST para o servidor FastMCP em http://127.0.0.1:8000/mcp/....
-
-Recebe a resposta do FastMCP e a apresenta ao usuário.
+Comunicação: O app.py iniciará a interface/lógica do Agente. Quando uma consulta jurídica é feita, a função proxy em app.py envia automaticamente uma requisição HTTP POST para o FastMCP em http://127.0.0.1:8000/mcp/... e aguarda a resposta para apresentá-la ao usuário.
