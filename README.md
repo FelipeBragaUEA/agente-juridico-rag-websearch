@@ -6,7 +6,7 @@ O sistema utiliza um servidor FastMCP (serviço de backend especializado) para c
 
 🛠️ 1. Configuração Inicial e Dependências
 
-1.1. Pré-requisitos
+- 1.1. Pré-requisitos
 
 Certifique-se de que você tem os seguintes softwares instalados no seu ambiente local:
 
@@ -14,7 +14,7 @@ Python 3.x
 
 pip (Gerenciador de pacotes do Python)
 
-1.2. Instalação das Dependências
+- 1.2. Instalação das Dependências
 
 O arquivo requirements.txt lista todas as bibliotecas Python necessárias (como FastAPI, Uvicorn, bibliotecas para embeddings, etc.).
 
@@ -27,14 +27,14 @@ pip install -r requirements.txt
 
 Esta etapa é obrigatória e deve ser executada apenas uma vez (ou sempre que houver atualização nas fontes de dados jurídicos). Ela prepara os documentos para a consulta.
 
-2.1. Execução do Script de Ingestão
+- 2.1. Execução do Script de Ingestão
 
 Execute o script responsável pelo carregamento e processamento dos documentos:
 
 python ingestaojuri.py
 
 
-Processo: Este script lê suas fontes de dados, aplica processamento de linguagem natural (tokenização, indexação, embedding vetorial) e armazena os dados em um formato consultável pelo FastMCP.
+------------------------------ Processo: Este script lê suas fontes de dados, aplica processamento de linguagem natural (tokenização, indexação, embedding vetorial) e armazena os dados em um formato consultável pelo FastMCP.
 
 Aguarde: O processo pode levar alguns minutos, dependendo do volume de dados. Espere a mensagem de conclusão antes de prosseguir.
 
@@ -48,7 +48,7 @@ Inicie o servidor de backend que hospeda a lógica de consulta especializada.
 
 Execute o comando em um terminal:
 
-uvicorn mcserver:app --host 127.0.0.1 --port 8000
+python mcp_server.py
 
 
 O servidor iniciará, escutando requisições no endereço http://127.0.0.1:8000.
